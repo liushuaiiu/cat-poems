@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>随机诗词展示</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 20px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    .poem {
+      margin-bottom: 20px;
+    }
+    .title {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    .author {
+      font-size: 1.2em;
+      color: #555;
+    }
+    .content {
+      margin-top: 10px;
+    }
+    .translation {
+      margin-top: 15px;
+      font-style: italic;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div id="poem-container" class="poem">
+    <div class="title">加载中...</div>
+    <div class="author"></div>
+    <div class="content"></div>
+    <div class="translation"></div>
+  </div>
+  <script>
+    async function fetchAndDisplayPoem() {
+      // 使用您的 JSON 文件网络地址
+      const response = await fetch('https://raw.githubusercontent.com/liushuaiiu/cat-poems/main/cat-poems.json');
+      const poems = await response.json();
+
+      // 随机选择一首诗
+      const randomPoem = poems[Math.floor(Math.random() * poems.length)];
+
+      // 更新页面内容
+      document.querySelector('.title').textContent = randomPoem.title;
+      document.querySelector('.author').textContent = `${randomPoem.author.name} ${randomPoem.author.dynasty}`;
+      document.querySelector('.content').innerHTML = randomPoem.content.lines.join('<br>');
+      document.querySelector('.translation').innerHTML = randomPoem.translation.lines.join('<br>');
+    }
+
+    // 初次加载诗词
+    fetchAndDisplayPoem();
+
+    // 每隔五分钟刷新一次（300,000 毫秒）
+    setInterval(fetchAndDisplayPoem, 300000);
+  </script>
+</body>
+</html>
